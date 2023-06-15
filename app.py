@@ -62,8 +62,11 @@ def update_user(id):
         user = UserModel.query.filter_by(id=id).first()
         if user:
             data = request.get_json()
-            user.username = data['username']
-            user.email = data['email']
+            if 'username' in data:
+                user.username = data['username']
+            if 'email' in data:
+                user.email = data['email']
+                
             db.session.commit()
             return make_response(jsonify({'message': 'user updated'}), 200)
         return make_response(jsonify({'message': 'user not found'}), 404)
